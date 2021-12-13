@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+  </head>
+  <body>
+   <h1>Developer Tools Console Demo</h1>
+   <button>Get Users</button>
+
+   <section id="users"></section>
+<!--
+
+Traversy Media
+Demo
+   undefined means there is no return value.
+   We can do math in the console. 
+
+   $_ Last seen object
+   cirlce with line will clear the console.
+   Inspect an element and then try 
+   $0 to see the elements 
+   $1 to see the next seen element
+
+   document.querySelector('h1').style.color = 'blue'
+
+   $('h1').style.color = 'green';
+
+-->
+
+<script>
+  console.log('hello');
+  // console.log(myVar);
+  //myVar not defined look at error and see line number and click that to see file.
+  console.error('This is an error');
+  console.warn('This is a warning');
+  console.dir(document);
+  //shows us the DOM object that we can traverse.
+  // we can get value we want from that object. 
+  console.table([{name: 'Joe', email: 'test@test.com', age: 49}]);
+  // console.clear();
+
+  console.group('Say Hello');
+  console.log('hello1');
+  console.log('hello2');
+  console.log('hello3');
+  console.groupEnd('Say Hello');
+  console.time('For Loop');
+  for(let i = 0; i < 2000; i ++){
+    console.log('i: ', i);
+  }
+  console.timeEnd('For Loop');
+  function greaterThan(x,y){
+    console.assert(x > y, {"Message" : "x is not greater than y", "x": x, "y" : y})
+  }
+  // greaterThan(4,5);
+
+
+
+  // <!-- Sources Tab -->
+  /*
+  we can use as a text editor
+  go to sources to add a workspace, and then select the folder from the project scaffolding, and then allow access.
+  We can add files as well. 
+
+*/
+
+// Add an ajax req
+
+
+
+
+let button = document.querySelector('button');
+console.log(button);
+button.addEventListener('click', getUsers);
+
+
+function getUsers(){
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.github.com/users', true);
+  xhr.onload = function(){
+    if(this.status == 200){
+      console.log('users returned');
+      let users = JSON.parse(this.responseText);
+      let output ='';
+      for(let i in users){
+        output +=
+        '<div class="user">' +
+          '<img src="'+users[i].avatar_url+'" width="70"; height="70">' +
+                '<ul>' + 
+                  '<li>ID: '+users[i].id+'</li>' +
+                  '<li>Login: '+users[i].login+'</li>' +
+                '</ul>' +
+        '</div>';
+      }
+      document.getElementById('users').innerHTML = output;
+    }
+  }
+  xhr.send();
+
+}
+
+
+
+</script>
+
+
+    
+    <script src="js/app.js"></script>
+  </body>
+</html>
